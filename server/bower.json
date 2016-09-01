@@ -1,0 +1,21 @@
+{
+  "name": "prodigium",
+  "description": "New tab page for Google Chrome",
+  "main": "./src/index.js",
+  "authors": [
+    "Deseteral <github.com/deseteral>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Deseteral/prodigium",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.1"
+  }
+}

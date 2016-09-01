@@ -17,4 +17,9 @@ gulp.task('build-html', () => gulp
   .pipe(gulp.dest('build'))
 );
 
-gulp.task('default', ['build-js', 'build-html']);
+gulp.task('build-bower', () => gulp
+  .src('bower_components/**/*')
+  .pipe(gulp.dest('build/bower_components'))
+);
+
+gulp.task('default', ['build-js', 'build-html', 'build-bower']);
