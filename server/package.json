@@ -1,0 +1,27 @@
+{
+  "name": "prodigium",
+  "version": "1.0.0",
+  "description": "New tab page for Google Chrome",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "gulp && node ./build/index.js",
+    "test": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deseteral/prodigium.git"
+  },
+  "author": "Deseteral <github.com/deseteral>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Deseteral/prodigium/issues"
+  },
+  "homepage": "https://github.com/Deseteral/prodigium#readme",
+  "devDependencies": {
+    "babel-preset-es2015-node6": "^0.3.0",
+    "eslint": "^3.4.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-sourcemaps": "^1.6.0"
+  }
+}
