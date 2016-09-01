@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+
+  "name": "prodigium",
+  "description": "New tab page for Google Chrome",
+  "version": "1.0.0",
+  "author": "Deseteral <github.com/deseteral>",
+
+  "incognito": "split",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
