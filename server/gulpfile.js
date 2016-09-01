@@ -12,4 +12,9 @@ gulp.task('build-js', () => gulp
   .pipe(gulp.dest('build'))
 );
 
-gulp.task('default', ['build-js']);
+gulp.task('build-html', () => gulp
+  .src(['src/**/*.html'])
+  .pipe(gulp.dest('build'))
+);
+
+gulp.task('default', ['build-js', 'build-html']);
