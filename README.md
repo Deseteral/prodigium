@@ -1,6 +1,6 @@
 # prodigium
 
-Custom new tab page for Google Chrome build using modern web technologies such as WebComponents.
+Custom new tab page for Google Chrome build using WebComponents.
 
 ## Requirements
 * Node v6.5.0
@@ -25,6 +25,11 @@ To build use default gulp task, or if you want to build and run:
 gulp # only build server code
 
 npm start # build and run
+```
+
+To run already built code:
+```shell
+node build/index.js
 ```
 
 To run tests use npm's test command:
