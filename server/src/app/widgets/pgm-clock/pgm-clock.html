@@ -1,0 +1,20 @@
+<!doctype html>
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="pgm-clock">
+  <style>
+    :host {
+      display: block;
+    }
+
+    .time {
+      font-family: 'Roboto Light', sans-serif;
+      font-size: 112px;
+      opacity: 0.54;
+    }
+  </style>
+  <template>
+    <span class="time">[[formattedTime]]</span>
+  </template>
+  <script src="pgm-clock.js"></script>
+</dom-module>

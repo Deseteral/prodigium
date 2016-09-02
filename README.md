@@ -1,6 +1,6 @@
 # prodigium
 
-Custom new tab page for Google Chrome build using WebComponents.
+Custom new tab page for Google Chrome built using WebComponents.
 
 ## Requirements
 * Node v6.5.0
