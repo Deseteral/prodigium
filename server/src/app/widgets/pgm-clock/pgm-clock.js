@@ -19,22 +19,20 @@ Polymer({
 
   formatTime() {
     const date = this._getCurrentDate();
-
-    let time = [
+    const time = [
       date.getHours(),
       date.getMinutes(),
       date.getSeconds()
     ];
 
-    time = time
+    return time
       .map((t) => t.toString())
       .map((t) => {
         if (t.length !== 2) {
           return '0' + t;
         }
         return t;
-      });
-
-    return `${time[0]}:${time[1]}:${time[2]}`;
+      })
+      .reduce((acc, el) => acc + ':' + el);
   }
 });
