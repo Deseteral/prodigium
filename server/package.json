@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "gulp && node ./build/index.js",
-    "test": "eslint ."
+    "test": "gulp && wct build/**/*-spec.html && eslint ."
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
     "eslint": "^3.4.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
-    "gulp-sourcemaps": "^1.6.0"
+    "gulp-sourcemaps": "^1.6.0",
+    "web-component-tester": "^4.3.4"
   },
   "dependencies": {
     "express": "^4.14.0"
