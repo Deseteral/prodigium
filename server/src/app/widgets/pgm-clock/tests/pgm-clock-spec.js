@@ -20,7 +20,12 @@ describe('<pgm-clock>', () => {
   });
 
   it('should display time', () => {
-    const time = pgmClock.formatTime();
+    const time = pgmClock.querySelector('.time').textContent;
+    /^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$/.test(time).should.be.true;
+  });
+
+  it('should correctly format time', () => {
+    const time = pgmClock._formatTime();
     time.should.be.eql('23:47:12');
   });
 });

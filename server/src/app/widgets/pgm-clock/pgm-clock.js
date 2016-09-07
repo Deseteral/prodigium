@@ -5,19 +5,15 @@ Polymer({
   },
 
   ready() {
-    this.formattedTime = this.formatTime();
+    this.formattedTime = this._formatTime();
 
     const CLOCK_REFRESH_INTERVAL = 500;
     setInterval(() => {
-      this.formattedTime = this.formatTime();
+      this.formattedTime = this._formatTime();
     }, CLOCK_REFRESH_INTERVAL);
   },
 
-  _getCurrentDate() {
-    return new Date();
-  },
-
-  formatTime() {
+  _formatTime() {
     const date = this._getCurrentDate();
     const time = [
       date.getHours(),
@@ -34,5 +30,9 @@ Polymer({
         return t;
       })
       .reduce((acc, el) => acc + ':' + el);
+  },
+
+  _getCurrentDate() {
+    return new Date();
   }
 });
