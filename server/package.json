@@ -4,8 +4,9 @@
   "description": "New tab page for Google Chrome",
   "main": "./src/index.js",
   "scripts": {
-    "start": "gulp && node ./build/index.js",
-    "test": "gulp && wct build/**/*-spec.html && eslint ."
+    "start": "gulp && node ./build/src/index.js",
+    "test": "gulp build-test && mocha build/tests/**/*-spec.js && wct build/**/*-spec.html && npm run lint",
+    "lint": "eslint src/**/*.js ; eslint tests/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -19,10 +20,13 @@
   "homepage": "https://github.com/Deseteral/prodigium#readme",
   "devDependencies": {
     "babel-preset-es2015-node6": "^0.3.0",
+    "chai": "^3.5.0",
     "eslint": "^3.4.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-sourcemaps": "^1.6.0",
+    "mocha": "^3.0.2",
+    "source-map-support": "^0.4.2",
     "web-component-tester": "^4.3.4"
   },
   "dependencies": {
