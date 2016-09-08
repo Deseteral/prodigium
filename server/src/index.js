@@ -1,51 +1,79 @@
+import fs from 'fs';
 import nodePath from 'path';
 import express from 'express';
 import RedditBackgrounds from './reddit-backgrounds';
 
-const app = express();
-const PORT = 3426;
+// Main entry point
+(() => {
+  // Configure the server
+  const config = loadConfig();
+  const app = express();
+  const redditBackgrounds = new RedditBackgrounds(config.subreddits);
 
-const subreddits = ['earthporn', 'skyporn'];
-const redditBackgrounds = new RedditBackgrounds(subreddits);
+  const BACKGROUND_REFRESH_INTERVAL =
+    1000 * 60 * config.backgroundRefreshInterval;
 
-// Refresh every 30 minutes
-const REDDIT_BACKGROUNDS_REFRESH_INTERVAL = 1000 * 60 * 30;
+  // Server routing
+  app.use('/', express.static(nodePath.join(__dirname, 'app')));
+  app.use('/widgets', express.static(nodePath.join(__dirname, 'app/widgets')));
+  app.use('/bower_components',
+    express.static(nodePath.join(__dirname, 'bower_components'))
+  );
 
-// Server routing
-app.use('/', express.static(nodePath.join(__dirname, 'app')));
-app.use('/widgets', express.static(nodePath.join(__dirname, 'app/widgets')));
-app.use('/bower_components',
-  express.static(nodePath.join(__dirname, 'bower_components'))
-);
+  app.get('/background', (req, res) => {
+    const url = redditBackgrounds.getRandomBackground();
+    res.send(url);
+  });
 
-app.get('/background', (req, res) => {
-  const url = redditBackgrounds.getRandomBackground();
-  res.send(url);
-});
-
-// Fetch backgrounds and start webserver
-console.log('Fetching background images from reddit...');
-redditBackgrounds.fetchBackgrounds()
-  .then(() => {
-    handleRedditFetch();
-
-    app.listen(PORT, () =>
-      console.log(`Prodigium server running on port ${PORT}`)
-    );
-  })
-  .catch(handleRedditFetchError);
-
-// Setup interval for background fetching
-setInterval(() => {
+  // Fetch backgrounds and start webserver
   console.log('Fetching background images from reddit...');
   redditBackgrounds.fetchBackgrounds()
-    .then(handleRedditFetch)
-    .catch(handleRedditFetchError);
-}, REDDIT_BACKGROUNDS_REFRESH_INTERVAL);
+    .then(() => {
+      handleRedditFetch(redditBackgrounds.backgrounds);
 
-function handleRedditFetch() {
-  const backgroundsNumber = redditBackgrounds.backgrounds.length;
-  console.log(`Fetched ${backgroundsNumber} backgrounds from reddit`);
+      app.listen(config.port, () =>
+        console.log(`Prodigium server running on port ${config.port}`)
+      );
+    })
+    .catch(handleRedditFetchError);
+
+  // Setup interval for background fetching
+  setInterval(() => {
+    console.log('Fetching background images from reddit...');
+    redditBackgrounds.fetchBackgrounds()
+      .then(() => handleRedditFetch(redditBackgrounds.backgrounds))
+      .catch(handleRedditFetchError);
+  }, BACKGROUND_REFRESH_INTERVAL);
+})();
+
+function loadConfig() {
+  const configFilePath = nodePath.join(__dirname, 'config.json');
+  const DEFAULT_CONFIG = {
+    port: 3426,
+    subreddits: ['earthporn'],
+    backgroundRefreshInterval: 30
+  };
+
+  if (fileExists(configFilePath)) {
+    console.log('Loading config');
+    return JSON.parse(fs.readFileSync(configFilePath));
+  }
+
+  console.log('Config file doesn\'t exist! Using default config');
+  fs.writeFileSync(configFilePath, JSON.stringify(DEFAULT_CONFIG, null, 2));
+  return DEFAULT_CONFIG;
+}
+
+function fileExists(fullpath) {
+  try {
+    return fs.statSync(fullpath).isFile();
+  } catch (e) {
+    return false;
+  }
+}
+
+function handleRedditFetch(backgrounds) {
+  console.log(`Fetched ${backgrounds.length} backgrounds from reddit`);
 }
 
 function handleRedditFetchError(err) {
