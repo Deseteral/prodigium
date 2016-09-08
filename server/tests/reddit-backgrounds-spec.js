@@ -7,6 +7,7 @@ const should = chai.should();
 import RedditBackgrounds from '../src/reddit-backgrounds';
 
 const earthpornFixture = require('./fixtures/earthporn.json');
+const skypornFixture = require('./fixtures/skyporn.json');
 
 describe('RedditBackgrounds', () => {
   it('should start empty', () => {
@@ -44,6 +45,29 @@ describe('RedditBackgrounds', () => {
           'http://i.imgur.com/u6BJXSN.jpg',
           'http://i.imgur.com/DnrCg8F.jpg',
           'http://i.imgur.com/ynT5tO8.jpg'
+        ]);
+      });
+  });
+
+  it('should fetch backgrounds from multiple subreddits', () => {
+    nock('https://reddit.com')
+      .get(/\/r\/earthporn.*/)
+      .reply(200, earthpornFixture);
+
+    nock('https://reddit.com')
+      .get(/\/r\/skyporn.*/)
+      .reply(200, skypornFixture);
+
+    const rb = new RedditBackgrounds(['earthporn', 'skyporn']);
+
+    return rb.fetchBackgrounds()
+      .then(() => {
+        rb.backgrounds.should.have.members([
+          'http://i.imgur.com/u6BJXSN.jpg',
+          'http://i.imgur.com/DnrCg8F.jpg',
+          'http://i.imgur.com/ynT5tO8.jpg',
+          'http://i.imgur.com/GT2JF4j.jpg',
+          'http://i.imgur.com/gFk9VJm.jpg'
         ]);
       });
   });
