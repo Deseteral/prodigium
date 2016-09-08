@@ -14,10 +14,22 @@ app.use('/bower_components',
   express.static(nodePath.join(__dirname, 'bower_components'))
 );
 
-redditBackgrounds.fetchBackgrounds().then(() => {
-  console.log('Fetched backgrounds from reddit');
-
-  app.listen(PORT, () =>
-    console.log(`Prodigium server running on port ${PORT}`)
-  );
+app.get('/background', (req, res) => {
+  const url = redditBackgrounds.getRandomBackground();
+  res.send(url);
 });
+
+console.log('Fetching background images from reddit...');
+redditBackgrounds.fetchBackgrounds()
+  .then(() => {
+    const backgroundsNumber = redditBackgrounds.backgrounds.length;
+    console.log(`Fetched ${backgroundsNumber} backgrounds from reddit`);
+
+    app.listen(PORT, () =>
+      console.log(`Prodigium server running on port ${PORT}`)
+    );
+  })
+  .catch((err) => {
+    console.error(err);
+    console.error('Failed to fetch reddit backgrounds');
+  });
