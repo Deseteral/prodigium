@@ -2,9 +2,15 @@
 
 Custom new tab page for Google Chrome built using WebComponents.
 
+## Features
+* Configurable
+* Random backgrounds from your favorite subreddits
+* Widgets:
+  * `pgm-clock`: Displays time and date
+
 ## Requirements
-* Node v6.5.0
-* Chrome 52+
+* `Node v6.5.0`
+* `Chrome 53+`
 
 ## Building
 
