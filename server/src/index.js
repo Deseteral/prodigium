@@ -1,7 +1,10 @@
 import fs from 'fs';
 import nodePath from 'path';
 import express from 'express';
+import bodyParser from 'body-parser';
+
 import RedditBackgrounds from './reddit-backgrounds';
+import BookmarksStore from './bookmarks-store';
 
 // Main entry point
 (() => {
@@ -9,11 +12,13 @@ import RedditBackgrounds from './reddit-backgrounds';
   const config = loadConfig();
   const app = express();
   const redditBackgrounds = new RedditBackgrounds(config.subreddits);
+  const bookmarksStore = new BookmarksStore();
 
   const BACKGROUND_REFRESH_INTERVAL =
     1000 * 60 * config.backgroundRefreshInterval;
 
   // Server routing
+  app.use(bodyParser.text());
   app.use('/', express.static(nodePath.join(__dirname, 'app')));
   app.use('/widgets', express.static(nodePath.join(__dirname, 'app/widgets')));
   app.use('/bower_components',
@@ -23,6 +28,27 @@ import RedditBackgrounds from './reddit-backgrounds';
   app.get('/background', (req, res) => {
     const url = redditBackgrounds.getRandomBackground();
     res.send(url);
+  });
+
+  const sendBookmarks = (res) =>
+    res.send(JSON.stringify(bookmarksStore.bookmarks));
+
+  app.get('/bookmarks', (req, res) => {
+    sendBookmarks(res);
+  });
+
+  app.put('/bookmarks', (req, res) => {
+    const url = req.body;
+    bookmarksStore.add(url);
+
+    sendBookmarks(res);
+  });
+
+  app.delete('/bookmarks', (req, res) => {
+    const url = req.body;
+    bookmarksStore.remove(url);
+
+    sendBookmarks(res);
   });
 
   // Fetch backgrounds and start webserver
