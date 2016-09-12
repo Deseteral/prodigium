@@ -4,14 +4,28 @@ export default class BookmarksStore {
   }
 
   add(url) {
-    this.bookmarks.push(url);
+    const bookmark = { url };
+
+    if (this.find(url)) {
+      return { error: 'ALREADY_IN_STORE' };
+    }
+
+    this.bookmarks.push(bookmark);
+    return bookmark;
   }
 
   remove(url) {
-    const index = this.bookmarks.indexOf(url);
+    const toRemove = this.find(url);
+    const index = this.bookmarks.indexOf(toRemove);
 
     if (index !== -1) {
       this.bookmarks.splice(index, 1);
     }
+  }
+
+  find(url) {
+    return this.bookmarks.find(
+      (bookmark) => bookmark.url === url
+    );
   }
 }

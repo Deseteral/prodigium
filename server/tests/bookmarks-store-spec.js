@@ -14,11 +14,15 @@ describe('BookmarksStore', () => {
   });
 
   it('should be able to add new site', () => {
-    bs.add('youtube.com');
+    const res = bs.add('youtube.com');
 
-    bs.bookmarks.should.have.members([
-      'youtube.com'
+    bs.bookmarks.should.have.deep.members([
+      { url: 'youtube.com' }
     ]);
+
+    res.should.eql({
+      url: 'youtube.com'
+    });
   });
 
   it('should be able to add new sites', () => {
@@ -26,11 +30,34 @@ describe('BookmarksStore', () => {
     bs.add('google.com');
     bs.add('reddit.com');
 
-    bs.bookmarks.should.have.members([
-      'youtube.com',
-      'google.com',
-      'reddit.com'
+    bs.bookmarks.should.have.deep.members([
+      { url: 'youtube.com' },
+      { url: 'google.com' },
+      { url: 'reddit.com' }
     ]);
+  });
+
+  it('should find site by url', () => {
+    bs.add('youtube.com');
+    bs.add('google.com');
+    const res = bs.find('youtube.com');
+
+    res.should.eql({
+      url: 'youtube.com'
+    });
+  });
+
+  it('should not add new site when it is already in store', () => {
+    bs.add('youtube.com');
+    const res = bs.add('youtube.com');
+
+    bs.bookmarks.should.have.deep.members([
+      { url: 'youtube.com' }
+    ]);
+
+    res.should.eql({
+      error: 'ALREADY_IN_STORE'
+    });
   });
 
   it('should be able to remove site', () => {
@@ -41,9 +68,9 @@ describe('BookmarksStore', () => {
     bs.remove('google.com');
 
     bs.bookmarks.length.should.equal(2);
-    bs.bookmarks.should.have.members([
-      'youtube.com',
-      'reddit.com'
+    bs.bookmarks.should.have.deep.members([
+      { url: 'youtube.com' },
+      { url: 'reddit.com' }
     ]);
   });
 });
