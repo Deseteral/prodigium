@@ -28,4 +28,29 @@ export default class BookmarksStore {
       (bookmark) => bookmark.url === url
     );
   }
+
+  static getRoute(bookmarksStore) {
+    const sendBookmarks = (res) =>
+      res.send(JSON.stringify(bookmarksStore.bookmarks));
+
+    return {
+      get(req, res) {
+        sendBookmarks(res);
+      },
+
+      put(req, res) {
+        const url = req.body;
+        bookmarksStore.add(url);
+
+        sendBookmarks(res);
+      },
+
+      delete(req, res) {
+        const url = req.body;
+        bookmarksStore.remove(url);
+
+        sendBookmarks(res);
+      }
+    };
+  }
 }

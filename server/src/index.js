@@ -1,8 +1,8 @@
 import fs from 'fs';
-import nodePath from 'path';
 import express from 'express';
-import bodyParser from 'body-parser';
+import nodePath from 'path';
 
+import router from './router';
 import RedditBackgrounds from './reddit-backgrounds';
 import BookmarksStore from './bookmarks-store';
 
@@ -18,38 +18,16 @@ import BookmarksStore from './bookmarks-store';
     1000 * 60 * config.backgroundRefreshInterval;
 
   // Server routing
-  app.use(bodyParser.text());
-  app.use('/', express.static(nodePath.join(__dirname, 'app')));
-  app.use('/widgets', express.static(nodePath.join(__dirname, 'app/widgets')));
-  app.use('/bower_components',
-    express.static(nodePath.join(__dirname, 'bower_components'))
-  );
-
-  app.get('/background', (req, res) => {
-    const url = redditBackgrounds.getRandomBackground();
-    res.send(url);
-  });
-
-  const sendBookmarks = (res) =>
-    res.send(JSON.stringify(bookmarksStore.bookmarks));
-
-  app.get('/bookmarks', (req, res) => {
-    sendBookmarks(res);
-  });
-
-  app.put('/bookmarks', (req, res) => {
-    const url = req.body;
-    bookmarksStore.add(url);
-
-    sendBookmarks(res);
-  });
-
-  app.delete('/bookmarks', (req, res) => {
-    const url = req.body;
-    bookmarksStore.remove(url);
-
-    sendBookmarks(res);
-  });
+  router(app)
+    .staticFiles()
+    .setupRoute(
+      '/background',
+      RedditBackgrounds.getRoute(redditBackgrounds)
+    )
+    .setupRoute(
+      '/bookmarks',
+      BookmarksStore.getRoute(bookmarksStore)
+    );
 
   // Fetch backgrounds and start webserver
   console.log('Fetching background images from reddit...');

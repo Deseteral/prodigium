@@ -54,4 +54,13 @@ export default class RedditBackgrounds {
         .catch((err) => reject(err));
     });
   }
+
+  static getRoute(redditBackgrounds) {
+    return {
+      get(req, res) {
+        const url = redditBackgrounds.getRandomBackground();
+        res.send(url);
+      }
+    };
+  }
 }
