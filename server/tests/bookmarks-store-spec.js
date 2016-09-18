@@ -14,45 +14,47 @@ describe('BookmarksStore', () => {
   });
 
   it('should be able to add new site', () => {
-    const res = bs.add('youtube.com');
+    const expectedUrl = 'http://youtube.com';
+    const res = bs.add(expectedUrl);
 
     bs.bookmarks.should.have.deep.members([
-      { url: 'youtube.com' }
+      { url: expectedUrl }
     ]);
 
     res.should.eql({
-      url: 'youtube.com'
+      url: expectedUrl
     });
   });
 
   it('should be able to add new sites', () => {
-    bs.add('youtube.com');
-    bs.add('google.com');
-    bs.add('reddit.com');
+    bs.add('http://youtube.com');
+    bs.add('http://google.com');
+    bs.add('http://reddit.com');
 
     bs.bookmarks.should.have.deep.members([
-      { url: 'youtube.com' },
-      { url: 'google.com' },
-      { url: 'reddit.com' }
+      { url: 'http://youtube.com' },
+      { url: 'http://google.com' },
+      { url: 'http://reddit.com' }
     ]);
   });
 
   it('should find site by url', () => {
-    bs.add('youtube.com');
-    bs.add('google.com');
-    const res = bs.find('youtube.com');
+    bs.add('http://youtube.com');
+    bs.add('http://google.com');
+    const res = bs.find('http://youtube.com');
 
     res.should.eql({
-      url: 'youtube.com'
+      url: 'http://youtube.com'
     });
   });
 
   it('should not add new site when it is already in store', () => {
-    bs.add('youtube.com');
-    const res = bs.add('youtube.com');
+    const doubledUrl = 'http://youtube.com';
+    bs.add(doubledUrl);
+    const res = bs.add(doubledUrl);
 
     bs.bookmarks.should.have.deep.members([
-      { url: 'youtube.com' }
+      { url: doubledUrl }
     ]);
 
     res.should.eql({
@@ -61,16 +63,16 @@ describe('BookmarksStore', () => {
   });
 
   it('should be able to remove site', () => {
-    bs.add('youtube.com');
-    bs.add('google.com');
-    bs.add('reddit.com');
+    bs.add('http://youtube.com');
+    bs.add('http://google.com');
+    bs.add('http://reddit.com');
 
-    bs.remove('google.com');
+    bs.remove('http://google.com');
 
     bs.bookmarks.length.should.equal(2);
     bs.bookmarks.should.have.deep.members([
-      { url: 'youtube.com' },
-      { url: 'reddit.com' }
+      { url: 'http://youtube.com' },
+      { url: 'http://reddit.com' }
     ]);
   });
 });

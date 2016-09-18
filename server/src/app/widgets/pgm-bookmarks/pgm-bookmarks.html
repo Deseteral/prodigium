@@ -1,0 +1,22 @@
+<!doctype html>
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
+
+<dom-module id="pgm-bookmarks">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <ul>
+      <template is="dom-repeat" items="[[bookmarks]]">
+        <li>
+          <a href="[[item.url]]">[[item.url]]</a>
+        </li>
+      </template>
+  </ul>
+  </template>
+  <script src="pgm-bookmarks.js"></script>
+</dom-module>
