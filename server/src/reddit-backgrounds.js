@@ -8,6 +8,8 @@ export default class RedditBackgrounds {
 
   fetchBackgrounds() {
     return new Promise((resolve, reject) => {
+      console.log('Fetching background images from reddit...');
+
       const subredditPromises = this.subreddits
         .slice()
         .map((subreddit) => this._fetchBackgroundsFromSubreddit(subreddit));
@@ -22,10 +24,24 @@ export default class RedditBackgrounds {
           });
 
           this.backgrounds = urls;
+
+          console.log(
+            `Fetched ${this.backgrounds.length} backgrounds from reddit`
+          );
           resolve();
         })
-        .catch((err) => reject(err));
+        .catch((err) => {
+          console.error(err);
+          console.error('Failed to fetch reddit backgrounds');
+
+          reject(err);
+        });
     });
+  }
+
+  fetchBackgroundsInInterval(refreshInterval) {
+    const refreshIntervalMillis = 1000 * 60 * refreshInterval;
+    setInterval(() => this.fetchBackgrounds(), refreshIntervalMillis);
   }
 
   getRandomBackground() {

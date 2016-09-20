@@ -1,6 +1,6 @@
 export default class BookmarksStore {
-  constructor() {
-    this.bookmarks = [];
+  constructor(bookmarks = []) {
+    this.bookmarks = bookmarks;
   }
 
   add(url) {

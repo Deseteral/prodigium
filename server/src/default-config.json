@@ -1,0 +1,8 @@
+{
+  "port": 3426,
+  "backgrounds": {
+    "subreddits": ["earthporn"],
+    "refreshInterval": 30
+  },
+  "bookmarks": []
+}

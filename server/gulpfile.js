@@ -22,6 +22,11 @@ gulp.task('build-bower', () => gulp
   .pipe(gulp.dest('build/src/bower_components'))
 );
 
+gulp.task('build-misc', () => gulp
+  .src('src/**/*.json')
+  .pipe(gulp.dest('build/src'))
+);
+
 gulp.task('build-test-js', () => gulp
   .src('tests/**/*.js')
   .pipe(sourcemaps.init())
@@ -37,5 +42,5 @@ gulp.task('build-test-fixtures', () => gulp
   .pipe(gulp.dest('build/tests'))
 );
 
-gulp.task('default', ['build-js', 'build-html', 'build-bower']);
+gulp.task('default', ['build-js', 'build-html', 'build-bower', 'build-misc']);
 gulp.task('build-test', ['default', 'build-test-js', 'build-test-fixtures']);
